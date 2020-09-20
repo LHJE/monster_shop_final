@@ -9,6 +9,9 @@ RSpec.describe 'Cart Show Page' do
       @ogre = @morgan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @giant = @morgan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @discount_1 = @morgan.discounts.create!(percent: 20, min_items: 5, active: true)
+      @discount_2 = @morgan.discounts.create!(percent: 50, min_items: 10)
+      @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 20, active: true)
     end
 
     describe 'I can see my cart' do
@@ -50,6 +53,36 @@ RSpec.describe 'Cart Show Page' do
 
         expect(page).to have_content('Your Cart is Empty!')
         expect(page).to_not have_button('Empty Cart')
+      end
+
+      describe 'discounts have been applied to the order' do
+        before :each do
+          2.times do
+            visit item_path(@ogre)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+          end
+
+          visit '/cart'
+        end
+        it "I can visit a cart show page and see an active discount having been applied" do
+
+        end
+
+        it "I can visit a cart show page and see an active discount has overridden another discount now that more items are in the cart" do
+          5.times do
+            visit item_path(@ogre)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+          end
+
+        end
       end
     end
 
@@ -168,5 +201,7 @@ RSpec.describe 'Cart Show Page' do
         expect(page).to have_content("Cart: 0")
       end
     end
+
+
   end
 end
