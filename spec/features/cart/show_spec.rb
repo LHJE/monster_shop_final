@@ -55,8 +55,18 @@ RSpec.describe 'Cart Show Page' do
         expect(page).to_not have_button('Empty Cart')
       end
 
+      it "I can visit cart even if no discounts are active" do
+        visit "cart"
+      end
+
       describe 'discounts have been applied to the order' do
         before :each do
+          @discount_1 = @morgan.discounts.create!(percent: 20, min_items: 5, active: true)
+          @discount_2 = @morgan.discounts.create!(percent: 50, min_items: 10)
+          @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 20, active: true)
+          @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 3, active: true)
+          @discount_4 = @brian.discounts.create!(percent: 90, min_items: 10, active: true)
+
           5.times do
             visit item_path(@ogre)
             click_button 'Add to Cart'
@@ -87,7 +97,7 @@ RSpec.describe 'Cart Show Page' do
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 10")
-            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 5) - (@discount_1.percent % @ogre.price * 5))}")
+            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - (@discount_1.percent % @ogre.price * 10))}")
             expect(page).to_not have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - (@discount_2.percent % @ogre.price * 10))}")
             expect(page).to have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
             expect(page).to_not have_content("#{@discount_2.percent}% Off #{@discount_2.min_items} Items or More Discount has been applied!")
