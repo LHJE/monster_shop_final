@@ -67,7 +67,7 @@ RSpec.describe 'Cart Show Page' do
           @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 3, active: true)
           @discount_4 = @brian.discounts.create!(percent: 90, min_items: 10, active: true)
         end
-
+ 
         it "I can visit a cart show page and not see an active discount unless the min items of one item is met" do
           2.times do
             visit item_path(@ogre)
