@@ -1,0 +1,17 @@
+<%= link_to 'New Discount', '/merchant/discounts/new' %></br></br>
+
+<% @discounts.each do |discount| %>
+  <section id='discount-<%= discount.id%>'>
+    <h2><%= "#{discount.percent}% Off #{discount.min_items} Items or More"  %></h2>
+    <p><%= discount.active ? "Active" : "Inactive" %></p>
+    <% if current_merchant_user? %>
+      <% if discount.active? %>
+        <%= button_to 'Inactivate', "/merchant/discounts/#{discount.id}/change_status", method: :put %>
+      <% elsif !discount.active? %>
+        <%= button_to 'Activate', "/merchant/discounts/#{discount.id}/change_status", method: :put %>
+      <% end %>
+      <%= button_to 'Update Discount', "/merchant/discounts/#{discount.id}/edit" %>
+      <%= button_to 'Delete', "/merchant/discounts/#{discount.id}", method: :delete %>
+    <% end %>
+  </section>
+<% end %>
