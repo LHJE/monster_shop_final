@@ -66,16 +66,29 @@ RSpec.describe 'Cart Show Page' do
           @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 20, active: true)
           @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 3, active: true)
           @discount_4 = @brian.discounts.create!(percent: 90, min_items: 10, active: true)
+        end
 
+        it "I can visit a cart show page and not see an active discount unless the min items of one item is met" do
+          2.times do
+            visit item_path(@ogre)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+            visit item_path(@hippo)
+            click_button 'Add to Cart'
+          end
+
+          expect(page).to_not have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
+
+        end
+
+        it "I can visit a cart show page and see an active discount having been applied" do
           5.times do
             visit item_path(@ogre)
             click_button 'Add to Cart'
           end
 
           visit '/cart'
-        end
-
-        it "I can visit a cart show page and see an active discount having been applied" do
 
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
@@ -87,7 +100,7 @@ RSpec.describe 'Cart Show Page' do
         end
 
         it "I can visit a cart show page and not see an inactive discount having overridden the a current discount now that there are more items in the cart" do
-          5.times do
+          10.times do
             visit item_path(@ogre)
             click_button 'Add to Cart'
           end
@@ -106,7 +119,7 @@ RSpec.describe 'Cart Show Page' do
         end
 
         it "I can visit a cart show page and see an active discount has overridden another discount now that more items are in the cart" do
-          15.times do
+          20.times do
             visit item_path(@ogre)
             click_button 'Add to Cart'
           end
