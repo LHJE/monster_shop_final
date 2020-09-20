@@ -6,7 +6,7 @@ RSpec.describe 'Cart Show Page' do
     before :each do
       @morgan = Merchant.create!(name: 'Morgans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
       @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
-      @ogre = @morgan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
+      @ogre = @morgan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 25 )
       @giant = @morgan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @discount_1 = @morgan.discounts.create!(percent: 20, min_items: 5, active: true)
@@ -57,29 +57,56 @@ RSpec.describe 'Cart Show Page' do
 
       describe 'discounts have been applied to the order' do
         before :each do
-          2.times do
+          5.times do
             visit item_path(@ogre)
-            click_button 'Add to Cart'
-            visit item_path(@hippo)
-            click_button 'Add to Cart'
-            visit item_path(@hippo)
             click_button 'Add to Cart'
           end
 
           visit '/cart'
         end
+
         it "I can visit a cart show page and see an active discount having been applied" do
+
+          within "#item-#{@ogre.id}" do
+            expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
+            expect(page).to have_content("Quantity: 5")
+            expect(page).to have_content("Subtotal: #{(number_to_currency(@ogre.price * 5) % @discount_1.percent)}")
+            expect(page).to have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
+          end
+
+        end
+
+        it "I can visit a cart show page and not see an inactive discount having overridden the a current discount now that there are more items in the cart" do
+          5.times do
+            visit item_path(@ogre)
+            click_button 'Add to Cart'
+          end
+
+          visit '/cart'
+
+          within "#item-#{@ogre.id}" do
+            expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
+            expect(page).to have_content("Quantity: 10")
+            expect(page).to have_content("Subtotal: #{(number_to_currency(@ogre.price * 10) % @discount_1.percent)}")
+            expect(page).to have_content("Subtotal: #{(number_to_currency(@ogre.price * 1) % @discount_2.percent)}")
+            expect(page).to_not have_content("#{@discount_2.percent}% Off #{@discount_2.min_items} Items or More Discount has been applied!")
+          end
 
         end
 
         it "I can visit a cart show page and see an active discount has overridden another discount now that more items are in the cart" do
-          5.times do
+          15.times do
             visit item_path(@ogre)
             click_button 'Add to Cart'
-            visit item_path(@hippo)
-            click_button 'Add to Cart'
-            visit item_path(@hippo)
-            click_button 'Add to Cart'
+          end
+
+          visit '/cart'
+
+          within "#item-#{@ogre.id}" do
+            expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
+            expect(page).to have_content("Quantity: 20")
+            expect(page).to have_content("Subtotal: #{(number_to_currency(@ogre.price * 20) % @discount_3.percent)}")
+            expect(page).to have_content("#{@discount_3.percent}% Off #{@discount_3.min_items} Items or More Discount has been applied!")
           end
 
         end
