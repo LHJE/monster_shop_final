@@ -14,7 +14,6 @@ class Order < ApplicationRecord
       @total = @total
     end
     order_items.each do |order_item|
-
       @total = @total + order_item.subtotal
     end
     @total
