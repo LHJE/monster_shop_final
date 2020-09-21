@@ -39,7 +39,7 @@ RSpec.describe 'Order Show Page' do
       expect(page).to have_content("Updated On: #{@order_2.updated_at}")
       expect(page).to have_content("Status: #{@order_2.status}")
       expect(page).to have_content("#{@order_2.count_of_items} items")
-      expect(page).to have_content("Total: $450.25")
+      expect(page).to have_content("Total: $440.20")
       expect(page).to have_content("Total: #{number_to_currency(@order_2.grand_total)}")
 
       within "#order-item-#{@order_item_2.id}" do
@@ -87,7 +87,7 @@ RSpec.describe 'Order Show Page' do
       expect(@order_item_2.fulfilled).to eq(false)
       expect(@order_item_3.fulfilled).to eq(false)
       expect(@giant.inventory).to eq(5)
-      expect(@ogre.inventory).to eq(7)
+      expect(@ogre.inventory).to eq(46)
     end
   end
 end
