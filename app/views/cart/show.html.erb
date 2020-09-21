@@ -14,11 +14,15 @@
           <% if discount.merchant_id == item.merchant.id && discount.active && cart.count_of(item.id) >= discount.min_items %>
             <p>Subtotal: <%= number_to_currency((cart.subtotal_of(item.id)) - (cart.subtotal_of(item.id) * (discount.percent / 100.0))) %></p>
             <p> <%= "#{discount.percent}% Off #{discount.min_items} Items or More Discount has been applied!" %></p>
-            
+            <% break %>
           <% else %>
-            <p>Subtotal: <%= number_to_currency(cart.subtotal_of(item.id)) %></p>
+            <% if discount == @discounts.last %>
+              <p>Subtotal: <%= number_to_currency(cart.subtotal_of(item.id)) %></p>
+            <% end %>
           <% end %>
         <% end %>
+      <% else %>
+        <p>Subtotal: <%= number_to_currency(cart.subtotal_of(item.id)) %></p>
       <% end %>
       <p>Sold by: <%= link_to item.merchant.name, "/merchants/#{item.merchant_id}" %>, Inventory: <%= item.inventory %></p>
       <%= button_to 'More of This!', "/cart/more/#{item.id}", method: :patch unless cart.limit_reached?(item.id) %>
