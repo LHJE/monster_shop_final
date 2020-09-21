@@ -15,7 +15,8 @@ class CartController < ApplicationController
   end
 
   def show
-    @discounts = Discount.all
+    reverse_discounts = Discount.order(:percent)
+    @discounts = reverse_discounts.reverse
   end
 
   def empty
