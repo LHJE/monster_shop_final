@@ -92,7 +92,7 @@ RSpec.describe 'Cart Show Page' do
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 5")
-            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 5) - (@discount_1.percent % @ogre.price * 5))}")
+            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 5) - ((@ogre.price * 5) * (@discount_1.percent / 100.0)))}")
             expect(page).to have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
           end
 
@@ -109,8 +109,8 @@ RSpec.describe 'Cart Show Page' do
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 10")
-            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - (@discount_1.percent % @ogre.price * 10))}")
-            expect(page).to_not have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - (@discount_2.percent % @ogre.price * 10))}")
+            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - ((@ogre.price * 10) * (@discount_1.percent / 100.0)))}")
+            expect(page).to_not have_content("Subtotal: #{number_to_currency((@ogre.price * 10) - ((@ogre.price * 10) * (@discount_2.percent / 100.0)))}")
             expect(page).to have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
             expect(page).to_not have_content("#{@discount_2.percent}% Off #{@discount_2.min_items} Items or More Discount has been applied!")
           end
@@ -128,7 +128,7 @@ RSpec.describe 'Cart Show Page' do
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 20")
-            expect(page).to_not have_content("Subtotal: #{number_to_currency((@ogre.price * 20) - (@discount_3.percent % @ogre.price * 20))}")
+            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 20) - ((@ogre.price * 20) * (@discount_1.percent / 100.0)))}")
             expect(page).to have_content("#{@discount_3.percent}% Off #{@discount_3.min_items} Items or More Discount has been applied!")
             expect(page).to_not have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
           end
