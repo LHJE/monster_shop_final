@@ -26,8 +26,23 @@ class Cart
 
   def grand_total
     grand_total = 0.0
+    items = {}
     @contents.each do |item_id, quantity|
-      grand_total += Item.find(item_id).price * quantity
+      items[Item.find(item_id)]= quantity
+    end
+    reverse_discounts = Discount.order(:percent)
+    @discounts = reverse_discounts.reverse
+    items.each do |item, quantity|
+      if @discounts == []
+        grand_total += item.price * quantity
+      else
+        @discounts.each do |discount|
+          if discount.merchant_id == item.merchant.id && discount.active && quantity >= discount.min_items
+          grand_total += (quantity * item.price) - ((quantity * item.price) * (discount.percent / 100.0))
+          break
+          end
+        end
+      end
     end
     grand_total
   end
