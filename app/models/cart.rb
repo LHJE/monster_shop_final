@@ -38,10 +38,10 @@ class Cart
       else
         @discounts.each do |discount|
           if discount.merchant_id == item.merchant.id && discount.active && quantity >= discount.min_items
-          grand_total += (quantity * item.price) - ((quantity * item.price) * (discount.percent / 100.0))
-        else
-          grand_total += item.price * quantity
-          break
+            grand_total += (quantity * item.price) - ((quantity * item.price) * (discount.percent / 100.0))
+          else
+            grand_total += item.price * quantity
+            break
           end
         end
       end
