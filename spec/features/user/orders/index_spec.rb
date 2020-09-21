@@ -44,7 +44,7 @@ RSpec.describe 'User Order Show Page' do
         expect(page).to have_content("Updated On: #{@order_2.updated_at}")
         expect(page).to have_content("Status: #{@order_2.status}")
         expect(page).to have_content("#{@order_2.count_of_items} items")
-        expect(page).to have_content("Total: $200")
+        expect(page).to have_content("Total: $200.00")
       end
     end
   end
