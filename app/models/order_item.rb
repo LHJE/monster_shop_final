@@ -6,7 +6,6 @@ class OrderItem < ApplicationRecord
     @order_items = OrderItem.where(item_id: item.id)
     reverse_discounts = Discount.order(:percent)
     @discounts = reverse_discounts.reverse
-
     if @discounts != [] && @order_items != []
       if @total.nil?
         @total = 0
@@ -24,7 +23,6 @@ class OrderItem < ApplicationRecord
         end
       end
     else
-
       @total = quantity * price
     end
     @total
