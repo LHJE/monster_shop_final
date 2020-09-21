@@ -39,6 +39,7 @@ RSpec.describe 'Order Show Page' do
       expect(page).to have_content("Updated On: #{@order_2.updated_at}")
       expect(page).to have_content("Status: #{@order_2.status}")
       expect(page).to have_content("#{@order_2.count_of_items} items")
+      expect(page).to have_content("Total: $450.25")
       expect(page).to have_content("Total: #{number_to_currency(@order_2.grand_total)}")
 
       within "#order-item-#{@order_item_2.id}" do
@@ -54,8 +55,10 @@ RSpec.describe 'Order Show Page' do
         expect(page).to have_content(@order_item_3.item.description)
         expect(page).to have_content(@order_item_3.quantity)
         expect(page).to have_content(@order_item_3.price)
+        expect(page).to have_content("$206.31")
         expect(page).to have_content(@order_item_3.subtotal)
       end
+
     end
 
     it 'I see a link to cancel an order, only on a pending order show page' do
