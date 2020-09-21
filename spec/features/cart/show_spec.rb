@@ -64,7 +64,6 @@ RSpec.describe 'Cart Show Page' do
           @discount_1 = @morgan.discounts.create!(percent: 20, min_items: 5, active: true)
           @discount_2 = @morgan.discounts.create!(percent: 50, min_items: 10)
           @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 20, active: true)
-          @discount_3 = @morgan.discounts.create!(percent: 75, min_items: 3, active: true)
           @discount_4 = @brian.discounts.create!(percent: 90, min_items: 10, active: true)
         end
 
@@ -131,6 +130,7 @@ RSpec.describe 'Cart Show Page' do
             expect(page).to have_content("Quantity: 20")
             expect(page).to_not have_content("Subtotal: #{number_to_currency((@ogre.price * 20) - (@discount_3.percent % @ogre.price * 20))}")
             expect(page).to have_content("#{@discount_3.percent}% Off #{@discount_3.min_items} Items or More Discount has been applied!")
+            expect(page).to_not have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
           end
 
         end
