@@ -125,14 +125,14 @@ RSpec.describe 'Cart Show Page' do
 
           visit '/cart'
 
+          save_and_open_page
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 20")
-            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 20) - ((@ogre.price * 20) * (@discount_1.percent / 100.0)))}")
+            expect(page).to have_content("Subtotal: #{number_to_currency((@ogre.price * 20) - ((@ogre.price * 20) * (@discount_3.percent / 100.0)))}")
             expect(page).to have_content("#{@discount_3.percent}% Off #{@discount_3.min_items} Items or More Discount has been applied!")
             expect(page).to_not have_content("#{@discount_1.percent}% Off #{@discount_1.min_items} Items or More Discount has been applied!")
           end
-
         end
       end
     end
