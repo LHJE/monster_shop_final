@@ -39,6 +39,7 @@ RSpec.describe 'Order Show Page' do
       expect(page).to have_content("Updated On: #{@order_2.updated_at}")
       expect(page).to have_content("Status: #{@order_2.status}")
       expect(page).to have_content("#{@order_2.count_of_items} items")
+      # require "pry"; binding.pry
       expect(page).to have_content("Total: $440.20")
       expect(page).to have_content("Total: #{number_to_currency(@order_2.grand_total)}")
 
@@ -48,6 +49,7 @@ RSpec.describe 'Order Show Page' do
         expect(page).to have_content(@order_item_2.quantity)
         expect(page).to have_content(@order_item_2.price)
         expect(page).to have_content(@order_item_2.subtotal)
+        expect(page).to have_content("Subtotal: $100.00")
       end
 
       within "#order-item-#{@order_item_3.id}" do
@@ -55,8 +57,8 @@ RSpec.describe 'Order Show Page' do
         expect(page).to have_content(@order_item_3.item.description)
         expect(page).to have_content(@order_item_3.quantity)
         expect(page).to have_content(@order_item_3.price)
-        expect(page).to have_content("$206.31")
         expect(page).to have_content(@order_item_3.subtotal)
+        expect(page).to have_content("Subtotal: $340.20")
       end
 
     end
