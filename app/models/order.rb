@@ -10,8 +10,6 @@ class Order < ApplicationRecord
   def grand_total
     if @total.nil?
       @total = 0
-    else
-      @total = @total
     end
     order_items.each do |order_item|
       @total = @total + order_item.subtotal
