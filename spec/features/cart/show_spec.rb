@@ -125,7 +125,8 @@ RSpec.describe 'Cart Show Page' do
 
           visit '/cart'
 
-          save_and_open_page
+          expect(page).to have_content("Total: $100")
+          
           within "#item-#{@ogre.id}" do
             expect(page).to have_content("Price: #{number_to_currency(@ogre.price)}")
             expect(page).to have_content("Quantity: 20")
