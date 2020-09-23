@@ -8,7 +8,11 @@ class Order < ApplicationRecord
   enum status: ['pending', 'packaged', 'shipped', 'cancelled']
 
   def grand_total
-    order_items.sum('price * quantity')
+    @total = 0
+    order_items.each do |order_item|
+      @total += order_item.subtotal
+    end
+    @total
   end
 
   def count_of_items
@@ -24,10 +28,14 @@ class Order < ApplicationRecord
   end
 
   def merchant_subtotal(merchant_id)
-    order_items
-      .joins("JOIN items ON order_items.item_id = items.id")
-      .where("items.merchant_id = #{merchant_id}")
-      .sum('order_items.price * order_items.quantity')
+    @order_item = order_items.joins("JOIN items ON order_items.item_id = items.id").where("items.merchant_id = #{merchant_id}").reduce
+    @discounts = Discount.where(active: true).where(merchant_id: merchant_id).where("min_items <= #{@order_item.quantity}").order(percent: :desc).pluck(:percent)
+    if @discounts == []
+      @total = (@order_item.price * @order_item.quantity).round(2)
+    else
+      @total = (@order_item.price * @order_item.quantity) - ((@order_item.price * @order_item.quantity) * (@discounts[0] / 100.0)).round(2)
+    end
+    @total
   end
 
   def merchant_quantity(merchant_id)

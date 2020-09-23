@@ -29,7 +29,7 @@ RSpec.describe Order do
     end
 
     it '.grand_total' do
-      expect(@order_1.grand_total).to eq(101.25)
+      expect(@order_1.grand_total).to eq(81.0)
       expect(@order_2.grand_total).to eq(140.5)
     end
 
