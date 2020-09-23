@@ -3,21 +3,15 @@ class OrderItem < ApplicationRecord
   belongs_to :item
 
   def subtotal
-    if @total.nil?
-      @total = 0
-    end
+    @total = 0
     @order_item = OrderItem.where(item_id: item.id).where(order_id: order.id).reduce
-    if @order_item == []
-      @total = quantity * price
+    @discounts = Discount.where(active: true).where(merchant_id: item.merchant_id).where("min_items <= #{@order_item.quantity}").order(percent: :desc).pluck(:percent)
+    if @discounts == []
+      @total = (quantity * price).round(2)
     else
-      @discounts = Discount.where(active: true).where(merchant_id: item.merchant_id).where("min_items <= #{@order_item.quantity}").order(percent: :desc).pluck(:percent)
-      if @discounts == []
-        @total += quantity * price
-      else
-        @total += (quantity * price) - ((quantity * price) * (@discounts[0] / 100.0))
-      end
+      @total = (quantity * price) - ((quantity * price) * (@discounts[0] / 100.0)).round(2)
     end
-    @total.round(2)
+    @total
   end
 
   def fulfill
