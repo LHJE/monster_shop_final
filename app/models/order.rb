@@ -8,9 +8,7 @@ class Order < ApplicationRecord
   enum status: ['pending', 'packaged', 'shipped', 'cancelled']
 
   def grand_total
-    if @total.nil?
-      @total = 0
-    end
+    @total = 0
     order_items.each do |order_item|
       @total += order_item.subtotal
     end
