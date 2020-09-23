@@ -12,7 +12,7 @@ class Order < ApplicationRecord
       @total = 0
     end
     order_items.each do |order_item|
-      @total = @total + order_item.subtotal
+      @total += order_item.subtotal
     end
     @total
   end
