@@ -58,15 +58,15 @@ item_10 = dog_shop.items.create!(name: "Bone", description: "XYZ", price: 6, ima
 @admin = User.create(name:"Priya", address:"13 Elm Street", city:"Denver", state:"CO", zip:"66666", email: "admin@gmail.com", password:"123", password_confirmation:"123", role: 2)
 
 #users - regular
-tom = User.create(name: "Tom", address: "121 Tomville St.", city: "Tomville", state: "CO", zip: "34565", email: "user@a.com", password: "123", password_confirmation: "123" )
+user = User.create(name: "Tom", address: "121 Tomville St.", city: "Tomville", state: "CO", zip: "34565", email: "user@a.com", password: "123", password_confirmation: "123" )
 
 #users - merchant employee
 m_user = morgan.users.create(name: 'Morgan', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218, email: 'merch@a.com', password: '123')
 
 #orders
-order_1 = tom.orders.create!(status: "pending")
-order_2 = tom.orders.create!(status: "pending")
-order_3 = tom.orders.create!(status: "pending")
+order_1 = user.orders.create!(status: "pending")
+order_2 = user.orders.create!(status: "pending")
+order_3 = user.orders.create!(status: "pending")
 
 discount_1 = morgan.discounts.create!(percent: 20, min_items: 5, active: true)
 discount_2 = morgan.discounts.create!(percent: 50, min_items: 10)
