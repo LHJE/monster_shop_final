@@ -6,8 +6,8 @@
 3. `git clone <paste_repo>`
 4. `cd monster_shop_final`
 5. `bundle install`
-5. `rails db:{drop,create,migrate}`
-5. `rails db:seed`
+6. `rails db:{drop,create,migrate}`
+7. `rails db:seed`
 ```
 
 ## Contributing
