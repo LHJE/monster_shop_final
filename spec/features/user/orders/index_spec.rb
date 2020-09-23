@@ -13,7 +13,7 @@ RSpec.describe 'User Order Show Page' do
       @order_1 = @user.orders.create!
       @order_2 = @user.orders.create!
       @order_1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2)
-      @order_2.order_items.create!(item: @giant, price: @hippo.price, quantity: 2)
+      @order_2.order_items.create!(item: @giant, price: @giant.price, quantity: 2)
       @order_2.order_items.create!(item: @ogre, price: @hippo.price, quantity: 2)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
