@@ -1,6 +1,6 @@
 ## Installation
 
-```
+```bash
 1. fork this repo
 2. clone your fork
 3. `git clone <paste_repo>`
