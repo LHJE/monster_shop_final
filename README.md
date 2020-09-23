@@ -1,5 +1,7 @@
 
 # Monster Shop Extensions - Bulk Discount
+user@a.com 123
+merch@a.com' 123
 
 
 ## Instructions

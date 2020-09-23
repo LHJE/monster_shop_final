@@ -15,7 +15,7 @@ class CartController < ApplicationController
   end
 
   def show
-    @discounts = Discount.all
+    @discounts = Discount.order(percent: :desc)
   end
 
   def empty

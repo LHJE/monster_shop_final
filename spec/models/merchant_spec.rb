@@ -32,7 +32,7 @@ RSpec.describe Merchant do
       @order_3 = @user_2.orders.create!(status: 1)
       @order_item_1 = @order_1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2)
       @order_item_2 = @order_1.order_items.create!(item: @hippo, price: @hippo.price, quantity: 3)
-      @order_item_3 = @order_2.order_items.create!(item: @giant, price: @hippo.price, quantity: 2)
+      @order_item_3 = @order_2.order_items.create!(item: @giant, price: @giant.price, quantity: 2)
       @order_item_4 = @order_2.order_items.create!(item: @ogre, price: @hippo.price, quantity: 2)
     end
 
