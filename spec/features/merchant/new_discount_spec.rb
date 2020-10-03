@@ -34,7 +34,7 @@ RSpec.describe 'New Merchant Discount' do
       expect(page).to have_content("Inactive")
     end
 
-    it 'I can not create an  discount for a merchant with an incomplete form' do
+    it 'I can not create a discount for a merchant with an incomplete form' do
       percent = ''
       min_items = 4
 

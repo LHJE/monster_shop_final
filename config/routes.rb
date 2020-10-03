@@ -13,6 +13,20 @@ Rails.application.routes.draw do
 
   resources :reviews, only: [:edit, :update, :destroy]
 
+  # resources :cart, only: [:show, :add_item, :empty, :update_quantity, :remove_item]
+
+  # resources :cart do
+  #   patch :add_item
+  # end
+
+  # namespace :cart do
+  #   get '/', to: 'cart#show', as: :cart
+    # post '/:item_id', to: 'cart#add_item'
+    # delete '/', to: 'cart#empty'
+    # patch '/:change/:item_id', to: 'cart#update_quantity'
+    # delete '/:item_id', to: 'cart#remove_item'
+  # end
+
   get '/cart', to: 'cart#show'
   post '/cart/:item_id', to: 'cart#add_item'
   delete '/cart', to: 'cart#empty'
@@ -21,7 +35,8 @@ Rails.application.routes.draw do
 
   get '/registration', to: 'users#new', as: :registration
   resources :users, only: [:create, :update]
-  patch '/user/:id', to: 'users#update'
+  # patch '/user/:id', to: 'users#update'
+  # resources :users, only: [:show, :edit]
   get '/profile', to: 'users#show'
   get '/profile/edit', to: 'users#edit'
   get '/profile/edit_password', to: 'users#edit_password'
