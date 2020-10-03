@@ -3,29 +3,24 @@ Rails.application.routes.draw do
   get '/', to: 'welcome#index'
   get :root, to: 'welcome#index'
 
-  resources :merchants do
-    resources :items, only: [:index]
-  end
+  get '/merchants', to: 'merchants#index'
+  get '/merchants/new', to: 'merchants#new'
+  post '/merchants', to: 'merchants#create'
+  get '/merchants/:id/edit', to: 'merchants#edit'
+  get '/merchants/:id', to: 'merchants#show', as: :merchant
+  patch '/merchants/:id', to: 'merchants#update'
+  delete '/merchants/:id', to: 'merchants#destroy'
 
-  resources :items, only: [:index, :show] do
-    resources :reviews, only: [:new, :create]
-  end
+  get '/merchants/:merchant_id/items', to: 'items#index'
+
+  # resources :items, only: [:index, :show] do
+  #   resources :reviews, only: [:new, :create]
+  # end
+
+  get '/items', to: 'items#index'
+  get '/items/:id', to: 'items#show', as: :item
 
   resources :reviews, only: [:edit, :update, :destroy]
-
-  # resources :cart, only: [:show, :add_item, :empty, :update_quantity, :remove_item]
-
-  # resources :cart do
-  #   patch :add_item
-  # end
-
-  # namespace :cart do
-  #   get '/', to: 'cart#show', as: :cart
-    # post '/:item_id', to: 'cart#add_item'
-    # delete '/', to: 'cart#empty'
-    # patch '/:change/:item_id', to: 'cart#update_quantity'
-    # delete '/:item_id', to: 'cart#remove_item'
-  # end
 
   get '/cart', to: 'cart#show'
   post '/cart/:item_id', to: 'cart#add_item'
@@ -35,8 +30,6 @@ Rails.application.routes.draw do
 
   get '/registration', to: 'users#new', as: :registration
   resources :users, only: [:create, :update]
-  # patch '/user/:id', to: 'users#update'
-  # resources :users, only: [:show, :edit]
   get '/profile', to: 'users#show'
   get '/profile/edit', to: 'users#edit'
   get '/profile/edit_password', to: 'users#edit_password'
