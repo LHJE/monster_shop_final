@@ -13,14 +13,13 @@ Rails.application.routes.draw do
 
   get '/merchants/:merchant_id/items', to: 'items#index'
 
-  # resources :items, only: [:index, :show] do
-  #   resources :reviews, only: [:new, :create]
-  # end
+# resources :reviews, only: [:edit, :update, :destroy]
 
   get '/items', to: 'items#index'
   get '/items/:id', to: 'items#show', as: :item
 
-  resources :reviews, only: [:edit, :update, :destroy]
+  # resources :reviews, only: [:edit, :update, :destroy]
+  get '/reviews/', to: 'reviews#edit', as: :edit_review
 
   get '/cart', to: 'cart#show'
   post '/cart/:item_id', to: 'cart#add_item'
